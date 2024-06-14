@@ -1,5 +1,4 @@
-# UsefulML
-ML useful package
+# UsefulML in python 3.8
 
 > ML Useful package.  
 > Author: [Jung-Pu-Chang](https://www.linkedin.com/in/jungpu-chang-024859264/)、[容噗玩Data](https://www.youtube.com/channel/UCmWCMqDKCR56pqd10qNkv3Q)    

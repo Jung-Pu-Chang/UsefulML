@@ -1,6 +1,6 @@
 # UsefulML in python 3.8
 
-> ML Useful package.  
+> ML Useful package for Time Series Forecasting
 > Author: [Jung-Pu-Chang](https://www.linkedin.com/in/jungpu-chang-024859264/)、[容噗玩Data](https://www.youtube.com/channel/UCmWCMqDKCR56pqd10qNkv3Q)    
 
 ## Directory
@@ -10,7 +10,7 @@
 ├── README.md
 ├── LICENSE
 ├── requirements.txt
-└── LGB.py
+└── PreProcessing.py
 ```
 
 ## Example
@@ -65,13 +65,15 @@ model_random_tune = LightGBM.random_tune(train_X_fs, train_Y,
                                          fold_time = 3, param_grid = param_grid)
 ```
 
-## Module Description : LGB.py  
+## Module Description : PreProcessing.py  
 
 ### Def Contents
 | def  | purpose |
 |:------:|:-------:|
-| permutation_selection | Feature Selection | 
-| build_model | Model Training | 
-| grid_tune | Model Tuning |
-| random_tune | Model Tuning |
+| sparse_fill_0 | Detect Sparse & Fill NA | 
+| auto_diff | Detect diff lag & diff | 
+| auto_transform | BoxCox & Yeojohnson Transform |
+| pelt | Change Point Detect |
+| decompose | Change Point Detect |
+| ad_test | Change Point Detect |
 

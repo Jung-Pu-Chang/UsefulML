@@ -28,12 +28,10 @@ class TS_PreProcess :
             print("Target Format Transform Failed ! Support type : 100")
    
     def sparse_fill_0(self) : # 資料清洗 : sparse 補 0
-        first = datetime.date(int(str(self.df[self.date_col].min())[:4]), 
-                              int(str(self.df[self.date_col].min())[4:6]), 
-                              int(str(self.df[self.date_col].min())[6:8]))
-        last = datetime.date(int(str(self.df[self.date_col].max())[:4]), 
-                             int(str(self.df[self.date_col].max())[4:6]), 
-                             int(str(self.df[self.date_col].max())[6:8]))
+        date_min = str(self.df[self.date_col].min()).zfill(8)
+        date_max = str(self.df[self.date_col].max()).zfill(8)
+        first = datetime.date(int(date_min[:4]), int(date_min[4:6]), int(date_min[6:8]))
+        last = datetime.date(int(date_max[:4]), int(date_max[4:6]), int(date_max[6:8]))
         number_of_days = abs(first - last).days+1
         date_list = [(first + datetime.timedelta(days = day)).isoformat() for day in range(number_of_days)]
         date = pd.DataFrame(date_list)
@@ -112,17 +110,7 @@ class TS_PreProcess :
         out['lamda'] = bc_lambda
         out['is_changepoint'] = out.index.isin(result).astype(int)
         return out
-        
-class ExternalData :  # 串日期、氣象等，尚未開發完成
-    def add_TW_calendar(cal):
-        cal.loc[(cal['是否放假']==2), "holiday"] = '1'
-        cal.loc[(cal['備註'].isnull()==False), "holiday"] = '2'
-        cal['holiday'] = cal['holiday'].fillna(0).astype(int)
-        labelencoder = LabelEncoder()
-        cal['星期'] = labelencoder.fit_transform(cal['星期'])
-        cal = cal[['西元日期','星期','holiday']]
-        print('holiday : 0 = 上班、1 = 周休二日、2 = 節慶')
-        return cal
+
 #%%
 if __name__=='__main__': 
     path = 'D:/Users/Pu_chang/Desktop/資料分析/3. 推論分析/時間序列/data/M5/'
@@ -134,7 +122,7 @@ if __name__=='__main__':
     train = pd.merge(train, calender, on="d",how='inner')
     train = train.sort_values(by = 'date', ascending=True)
     
-    test = TS_PreProcess(df, 'date','y'))
+    test = TS_PreProcess(df, 'date','y')
     df = test.preprocessing('additive',4,4)
     #out = test.sparse_fill_0()
     #test.decompose(out, 'additive') # multiplicative
@@ -145,8 +133,4 @@ if __name__=='__main__':
     'yeojohnson inverse'
     forecast = np.power((fitted_lambda * forecast[['yhat']]) + 1, 1 / fitted_lambda) - 1
 
-    df1 = pd.read_csv(path + '外部資料/110中華民國政府行政機關辦公日曆表.csv', encoding='big5',header=0) 
-    df2 = pd.read_csv(path + '外部資料/111年中華民國政府行政機關辦公日曆表.csv', encoding='big5',header=0) 
-    df3 = pd.read_csv(path + '外部資料/112年中華民國政府行政機關辦公日曆表.csv', encoding='big5',header=0) 
-    cal = pd.concat([df1,df2,df3],axis=0) 
-    cal = ExternalData.add_TW_calendar(cal)
+

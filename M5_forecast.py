@@ -1,5 +1,5 @@
 import sys
-sys.path.append(r'D:\Users\Pu_chang\Desktop\UsefulML')
+sys.path.append(r'D:\Users\Pu_chang\Desktop\資料分析\UsefulML')
 from PreProcessing import TS_PreProcess
 import datetime
 import itertools # grid_search
@@ -43,14 +43,15 @@ train['date'] = train['date'].replace(to_replace ='-', value = '', regex = True)
 
 preprocess = TS_PreProcess(train, 'date','y')
 df = preprocess.preprocessing('additive',4,4) 
+
 'sparse_fill_0 > auto_diff > auto_transform > pelt > decompose > ad_test'
 
 out = preprocess.sparse_fill_0()
-preprocess.ad_test(out) # 穩定偵測
 diff_data, lag = preprocess.auto_diff(out) # 差分偵測
 bc_data, bc_lambda = preprocess.auto_transform(out) # 常態與穩定轉換
 result = preprocess.pelt(out,4,4) # 斷點
 preprocess.decompose(out, 'additive') # multiplicative 不常用，有0就掛
+preprocess.ad_test(out) # 穩定偵測
 
 '''
 圖 1 = 整體趨勢可看斷點

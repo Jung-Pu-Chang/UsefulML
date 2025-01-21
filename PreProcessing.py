@@ -116,13 +116,14 @@ if __name__=='__main__':
     path = 'D:/Users/Pu_chang/Desktop/資料分析/3. 推論分析/時間序列/data/M5/'
     validation = pd.read_csv(path + 'sales_train_validation.csv', encoding='utf-8',header=0)
     calender = pd.read_csv(path + 'calendar.csv', encoding='utf-8',header=0)
-    train = validation.loc[5889].reset_index().iloc[6:,:]
+    train = validation.loc[5859].reset_index().iloc[6:,:]
     train.columns = ['d', 'y']
     train['y'] = train['y'].astype(int)
     train = pd.merge(train, calender, on="d",how='inner')
     train = train.sort_values(by = 'date', ascending=True)
+    train['date'] = train['date'].replace(to_replace ='-', value = '', regex = True).astype(int)
     
-    test = TS_PreProcess(df, 'date','y')
+    test = TS_PreProcess(train, 'date','y')
     df = test.preprocessing('additive',4,4)
     #out = test.sparse_fill_0()
     #test.decompose(out, 'additive') # multiplicative
